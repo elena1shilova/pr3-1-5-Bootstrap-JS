@@ -13,21 +13,21 @@ public class User {
     private int id;
     @NotEmpty(message = "Поле не должно быть пустым")
     @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
-    @Column
+    @Column(name = "name")
     private String name;
     @NotEmpty(message = "Поле не должно быть пустым")
     @Size(min = 2, max = 100, message = "Фамилия должна быть от 2 до 100 символов длиной")
-    @Column
+    @Column(name = "surname")
     private String surname;
     @NotEmpty(message = "Поле не должно быть пустым")
     @Min(value = 5, message = "Возраст не может быть меньше 5")
-    @Column
+    @Column(name = "age")
     private Long age;
     @NotEmpty(message = "Поле не должно быть пустым")
-    @Column
+    @Column(name = "email")
     private String email;
     @NotEmpty(message = "Поле не должно быть пустым")
-    @Column
+    @Column(name = "password")
     private String password;
 
     public User() {
@@ -88,5 +88,17 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
