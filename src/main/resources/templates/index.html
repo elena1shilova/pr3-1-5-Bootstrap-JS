@@ -5,31 +5,11 @@
 </head>
 <body>
 <h1>Welcome to Index PAGE!</h1>
-<div th:switch="${persons}">
-    <h2 th:case="null">No persons found!</h2>
-    <div th:case="*">
-        <h2>Persons</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Surname</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="person : ${persons}">
-                <td th:text="${person.id}"></td>
-                <td th:text="${person.name}"></td>
-                <td th:text="${person.surname}"></td>
-                <td th:text="${person.age}"></td>
-                <td th:text="${person.email}"></td>
-                <td><a th:href="@{person-update/{id}(id=${person.id})}">Edit</a></td>
-                <td><a th:href="@{person-delete/{id}(id=${person.id})}">Delete</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+<div th:each="user : ${users}">
+    <td th:text="'Фамилия и имя: ' + ${user.getName()} + ' ' + ${user.getSurname()} + ', полных лет: ' + ${user.getAge()} + ', эл. почта: ' + ${user.getEmail()}">VALUE</td>
+    <br>
+
+</div>
 
 </body>
 </html>
