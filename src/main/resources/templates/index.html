@@ -5,10 +5,21 @@
 </head>
 <body>
 <h1>Welcome to Index PAGE!</h1>
-<div th:each="user : ${users}">
-    <td th:text="'Фамилия и имя: ' + ${user.getName()} + ' ' + ${user.getSurname()} + ', полных лет: ' + ${user.getAge()} + ', эл. почта: ' + ${user.getEmail()}">VALUE</td>
+<div class="float" sec:authorize ="!isAuthenticated()">
+    <form  th:action="@{/login}" method="post">
+        <input type="submit" value="Авторизоваться">
+    </form>
+    <form  th:action="@{/registration}" method="post">
+        <input type="submit" value="Зарегистрироваться">
+    </form>
+</div>
+<div class="float" sec:authorize="isAuthenticated()" >
+    <div th:text="${#authentication.name}"></div>
     <br>
 
+    <form  th:action="@{/logout}" method="post">
+        <input type="submit" value="Выйти">
+    </form>
 </div>
 
 </body>
