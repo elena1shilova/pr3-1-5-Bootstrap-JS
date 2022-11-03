@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @Size(min=2, message = "Не меньше 5 знаков")
     @Column//(nullable = false, length = 255)
     private String password;
-    @Transient
+    //@Transient
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
     public User() {

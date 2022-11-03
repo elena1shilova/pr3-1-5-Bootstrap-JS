@@ -21,50 +21,33 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/user")
+    public String userList1(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("users", user);
+        return "user";
+    }
 
     @GetMapping("/admin")
     public String userList(Model model) {
-        model.addAttribute("allUser", userService.allUser());
+        model.addAttribute("allUsers", userService.allUsers());
         return "admin";
     }
 
     @PostMapping("/admin")
-    public String deleteUser(@RequestParam(required = true, defaultValue = "") Long userId,
-                             @RequestParam(required = true, defaultValue = "") String action,
-                             Model model) {
-        if(action.equals("delete")) {
+    public String  deleteUser(@RequestParam(required = true, defaultValue = "" ) Long userId,
+                              @RequestParam(required = true, defaultValue = "" ) String action,
+                              Model model) {
+        if (action.equals("delete")){
             userService.deleteUser(userId);
         }
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/{userId}")
-    public String gtUser(@PathVariable("userId") Long userId, Model model) {
+    @GetMapping("/admin/gt/{userId}")
+    public String  gtUser(@PathVariable("userId") Long userId, Model model) {
         model.addAttribute("allUsers", userService.usergtList(userId));
         return "admin";
     }
-//    @GetMapping("/usersss")
-//    public String userInfo() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        Usersdetails usersdetails = (Usersdetails) authentication.getPrincipal();
-//        //System.out.println(usersdetails.getUsername());
-//        //System.out.println(usersdetails.getUser());
-//
-//        return "index";
-//    }
-/*@GetMapping("/index")
-public String index() {
-    return "index";
-}
-@GetMapping("/usersss")
-public String userInfo(Model model) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //User users1 = (User) authentication.getPrincipal();
-
-    User users = (User) authentication.getPrincipal();
-    //System.out.println(usersdetails.getUsername());
-    //System.out.println(usersdetails.getUser());
-    model.addAttribute("users", users);
-    return "index";
-}*/
 }
