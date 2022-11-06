@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 @Controller
 public class RegistrationController {
@@ -26,6 +27,7 @@ public class RegistrationController {
         return "registration";
     }
 
+    //@Transactional
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
 

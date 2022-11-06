@@ -5,6 +5,66 @@
 </head>
 <body>
 <h1>Welcome to admin PAGE!</h1>
+<div th:switch="${allUsers}">
+  <h2 th:case="null">Не найдено лиц!</h2>
+  <div th:case="*" >
+    <table border="1" width="100%">
+      <thead>
+      <tr>
+        <th>Id</th>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Возраст</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Role</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user : ${allUsers}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.surname}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.email}"></td>
 
+         <td th:text="${user.password}"></td>
+        <td>
+          <ul>
+            <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
+          </ul>
+        </td>
+
+
+
+        <td><button><a th:href="@{admin/{id}(id=${user.id})}">Delete</a></button></td>
+        <td><button><a th:href="@{admin/edit/{id}(id=${user.id})}">Edit</a></button></td>
+
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <a href="/">Главная</a>
+
+
+
+
+<br>
+<div class="float" sec:authorize="isAuthenticated()">
+  <form  th:action="@{/logout}" method="post">
+    <input type="submit" value="Выйти">
+  </form>
+</div>
+<div class="float" sec:authorize ="!isAuthenticated()">
+  <form  th:action="@{/login}" method="post">
+    <input type="submit" value="Авторизоваться">
+  </form>
+  <form  th:action="@{/registration}" method="post">
+    <input type="submit" value="Зарегистрироваться">
+  </form>
+</div>
+</div>
 </body>
 </html>

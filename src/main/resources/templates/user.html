@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-  <title>Spring Security Example</title>
+  <title>Личная страница</title>
 </head>
 <body>
-<h1>Welcome to user PAGE!</h1>
+<h1>Добро пожаловать на вашу страницу: <a th:text="${#authentication.name}"></a></h1>
 <div th:switch="${users}">
-  <h2 th:case="null">No persons found!</h2>
-  <div th:case="*">
-    <table>
+  <h2 th:case="null">Не найдено лиц!</h2>
+  <div th:case="*" >
+    <table border="1" width="100%">
       <thead>
       <tr>
         <th>Id</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Age</th>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Возраст</th>
         <th>Email</th>
       </tr>
       </thead>
@@ -25,11 +25,24 @@
         <td th:text="${user.surname}"></td>
         <td th:text="${user.age}"></td>
         <td th:text="${user.email}"></td>
-        <td><a th:href="@{person-update/{id}(id=${user.id})}">Edit</a></td>
-        <td><a th:href="@{person-delete/{id}(id=${user.id})}">Delete</a></td>
       </tr>
       </tbody>
     </table>
   </div>
+  <br>
+  <div class="float" sec:authorize="isAuthenticated()">
+    <form  th:action="@{/logout}" method="post">
+      <input type="submit" value="Выйти">
+    </form>
+  </div>
+  <div class="float" sec:authorize ="!isAuthenticated()">
+    <form  th:action="@{/login}" method="post">
+      <input type="submit" value="Авторизоваться">
+    </form>
+    <form  th:action="@{/registration}" method="post">
+      <input type="submit" value="Зарегистрироваться">
+    </form>
+  </div>
+</div>
 </body>
 </html>
