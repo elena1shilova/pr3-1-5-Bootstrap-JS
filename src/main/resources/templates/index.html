@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Spring Security Example</title>
+    <title>Первая страница сайта</title>
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
+<h1>Добро пожаловать на сайт!</h1>
+<br>
+<br>
 <div class="float" sec:authorize ="!isAuthenticated()">
     <form  th:action="@{/login}" method="post">
         <input type="submit" value="Авторизоваться">
     </form>
+    <br>
+    <br>
     <form  th:action="@{/registration}" method="post">
         <input type="submit" value="Зарегистрироваться">
     </form>

@@ -1,38 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<meta charset="UTF-8">
-<title>Create person</title>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+
+<title>Редактирование данных пользователя</title>
 </head>
 <body>
+<h1>Вы на странице редактирования выбранного пользователя</a></h1>
 <form action="#" th:action="@{/admin/edit}" th:object="${user}" method="post">
   <label for="id">ID</label>
   <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
   <br/>
-  <label for="username">First name</label>
+  <label for="username">Имя</label>
   <input type="text" th:field="*{username}" id="username" placeholder="Username">
   <br/>
-  <label for="surname">Surname</label>
+  <label for="surname">Фамилия</label>
   <input type="text" th:field="*{surname}" id="surname" placeholder="Surname">
   <br/>
-  <label for="age">Age</label>
+  <label for="age">Возраст</label>
   <input type="text" th:field="*{age}" id="age" placeholder="Age">
   <br/>
   <label for="email">Email</label>
   <input type="text" th:field="*{email}" id="email" placeholder="Email">
   <br/>
-  <label for="password">Password</label>
+  <label for="password">Пароль</label>
   <input type="text" th:field="*{password}" id="password" placeholder="Password">
   <br/>
-
   <div class="form-group row">
-    <label class="col-4 col-form-label">Roles: </label>
-    <select multiple="multiple" th:name="role" id="role">
-      <option th:each="role : ${allRoles}" th:value="${role.getId()}" th:text="${role.name}"/>
+    <label class="col-4 col-form-label" for="roleId">Роль</label>
+    <select multiple="multiple" th:name="roleId" id="roleId">
+      <option th:each="role : ${allRoles}"
+              th:value="${role.id}"
+              th:text="${role.id} + ' ' + ${role.name}"/>
     </select>
   </div>
+
   <br/>
 
-  <input type="submit" value="Update person">
+  <input type="submit" value="Внести изменения">
+  <a href="/admin">Отмена</a>
+  <br>
+
 </form>
 
 </body>

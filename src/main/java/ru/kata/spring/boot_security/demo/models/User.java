@@ -1,10 +1,7 @@
 package ru.kata.spring.boot_security.demo.models;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Collection;
@@ -18,42 +15,29 @@ public class User implements UserDetails {
     private Long id;
     @NotEmpty(message = "Поле не должно быть пустым")
     @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
-    @Column//(nullable = false, length = 255)
+    @Column
     private String username;
-    //@NotEmpty(message = "Поле не должно быть пустым")
+
     @Size(min = 2, max = 100, message = "Фамилия должна быть от 2 до 100 символов длиной")
-    @Column//(nullable = false, length = 255)
+    @Column
     private String surname;
-    //@NotEmpty(message = "Поле не должно быть пустым")
-    //    @Min(value = 1, message = "Возраст не может быть меньше 5")
-    //@Size(min = 1, max = 100, message = "Возраст не может быть меньше 1")
+
     @Column(nullable = false)
     private Long age;
-    //@NotEmpty(message = "Поле не должно быть пустым")
-    //@Column(name = "email")
+
     @Size(min=2, message = "Не меньше 5 знаков")
-    @Column//(nullable = false, length = 255)
+    @Column
     private String email;
-    //@NotEmpty(message = "Поле не должно быть пустым")
-    //@Column(name = "password")
+
     @Size(min=2, message = "Не меньше 5 знаков")
-    @Column//(nullable = false, length = 255)
+    @Column
     private String password;
-    //@Transient
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
     public User() {
 
     }
-
-//    public User(Long id, String name, String surname, Long age, String email, String password) {
-//        this.id = id;
-//        this.name = name;
-//        this.surname = surname;
-//        this.age = age;
-//        this.email = email;
-//        this.password = password;
-//    }
 
     public Long getId() {
         return id;
@@ -139,20 +123,5 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//                "id=" + id +
-//                ", name='" + username + '\'' +
-//                ", surname='" + surname + '\'' +
-//                ", age=" + age +
-//                ", email='" + email + '\'' +
-//                ", password='" + password + '\'' +
-//                '}';
 
-
-//    private final User user;
-//    public User getUser() {
-//        return this.user;
-//    }
 }

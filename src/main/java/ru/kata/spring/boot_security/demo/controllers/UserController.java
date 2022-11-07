@@ -10,23 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-
-import ru.kata.spring.boot_security.demo.repositopies.UserRepository;
 import ru.kata.spring.boot_security.demo.services.UserService;
-
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 
 @Controller
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping("/user")
     public String userList1(Model model) {
@@ -49,28 +39,6 @@ public class UserController {
         return "redirect:/admin";
     }
 
-//    @GetMapping("/admin/gt/{userId}")
-//    public String  gtUser(@PathVariable("userId") Long userId, Model model) {
-//        model.addAttribute("allUsers", userService.usergtList(userId));
-//        return "admin";
-//    }
-
-//    @GetMapping("admin/edit/{id}")
-//    public String update(@PathVariable("id") Long id, Model model) {
-//        User user = userService.show(id);
-//
-//        model.addAttribute("user", user);
-//        model.addAttribute("allRoles", userService.allRoles());
-//        return "edit";
-//    }
-//@GetMapping("admin/edit/{id}")
-//public String update(@PathVariable("id") Long id, Model model) {
-//    User user = userService.show(id);
-//    List<Role> roles = userService.allRoles();
-//    model.addAttribute("user", user);
-//    model.addAttribute("allRoles", roles);
-//    return "edit";
-//}
 @GetMapping("admin/edit/{id}")
 public String update(@PathVariable("id") Long id, Model model) {
     User user = userService.show(id);
@@ -79,22 +47,10 @@ public String update(@PathVariable("id") Long id, Model model) {
     model.addAttribute("allRoles", role);
     return "edit";
 }
-
     @PostMapping("admin/edit")
-    public String update(User user) {
-
-        userService.saveUser1(user);
-
+    public String update(@RequestParam(value = "roleId") Long roleId,  User user) {
+        userService.saveUser1(user,roleId);
         return "redirect:/admin";
     }
-//    @PostMapping("admin/edit")
-//    public String update(User user) {
-//        userService.save(user);
-//        return "redirect:/admin";
-//    }
-
-
-
-
 
 }
