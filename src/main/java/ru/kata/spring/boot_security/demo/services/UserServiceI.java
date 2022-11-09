@@ -7,19 +7,18 @@ import ru.kata.spring.boot_security.demo.models.User;
 import java.util.List;
 
 public interface UserServiceI extends UserDetailsService {
-    //@Override
-    public UserDetails loadUserByUsername(String username);
 
-    public User findUserById(Long userId);
+    UserDetails loadUserByUsername(String username);
 
-    public List<User> allUsers();
+    User findUserById(Long userId);
 
-    public User show(Long id);
+    List<User> allUsers();
 
-    public void delete(Long id);
+    User show(Long id);
 
-    public void saveUser1(User user);
+    void delete(Long id);
 
+    void saveUser1(User user);
 
-    public boolean newUser(User user);
+    boolean newUser(User user);
 }

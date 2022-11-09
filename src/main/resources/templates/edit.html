@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-
 <title>Редактирование данных пользователя</title>
 </head>
 <body>
@@ -27,24 +26,15 @@
   <br/>
 
   <label for="roleId" >Роль</label>
-  <select class="form-control multi-select" th:multiple="multiple" th:name="roles" id="roleId"
-          >
+  <select class="form-control multi-select" th:multiple="multiple" th:name="roles" id="roleId" required size="2"          >
     <option th:each="role : ${roles}"
             th:value="${role.id}"
-            th:text="${role.id} + ' ' + ${role.name}"
-            th:selected="${role.id} == ${id}"
-    />
-
+            th:text="${role.id} + ' ' + ${role.name}"/>
   </select>
-
-
   <br/>
-
   <input type="submit" value="Внести изменения">
   <a href="/admin">Отмена</a>
   <br>
-
 </form>
-
 </body>
 </html>

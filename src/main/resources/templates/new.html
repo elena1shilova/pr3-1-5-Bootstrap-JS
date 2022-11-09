@@ -6,7 +6,7 @@
 <body>
 <h1>Добро пожаловать на страницу создания пользователя!</h1>
 <div>
-    <form th:method="POST" th:action="@{/new}" th:object="${userForm}">
+    <form th:method="POST" th:action="@{/admin/new}" th:object="${userForm}">
         <label for="username">Введите имя: </label>
         <input type="text" th:field="*{username}" id="username"/>
         <div style="color: red" th:if="${#fields.hasErrors('username')}"
@@ -34,19 +34,15 @@
         </br>
         </br>
         <label for="roleId" >Роль</label>
-        <select class="form-control multi-select" th:multiple="multiple" th:name="roles" id="roleId"
-        >
+        <select class="form-control multi-select" th:multiple="multiple" th:name="roles" id="roleId">
             <option th:each="role : ${roles}"
                     th:value="${role.id}"
                     th:text="${role.id} + ' ' + ${role.name}"
-                    th:selected="${role.id} == ${id}"
-            />
-
+                    th:selected="${role.id} == ${id}"/>
         </select>
         </br>
         </br>
         <input type="submit" value="Создать!"/>
-
     </form>
     </br></br>
     <a href="/admin">Главная</a>

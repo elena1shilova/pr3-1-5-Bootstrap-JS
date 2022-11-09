@@ -1,14 +1,10 @@
 package ru.kata.spring.boot_security.demo.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repositopies.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositopies.UserRepository;
 
 import javax.transaction.Transactional;
@@ -31,11 +27,9 @@ public class UserService implements UserServiceI {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-
         return user;
     }
 
@@ -49,7 +43,6 @@ public class UserService implements UserServiceI {
     public List<User> allUsers() {
         return userRepository.findAll();
     }
-
 
     @Override
     public User show(Long id) {
@@ -65,10 +58,10 @@ public class UserService implements UserServiceI {
     public void saveUser1(User user) {
         userRepository.save(user);
     }
+
     @Override
     public boolean newUser(User user) {
         User userFromDB = userRepository.findByUsername(user.getUsername());
-
         if (userFromDB != null) {
             return false;
         }
@@ -76,6 +69,4 @@ public class UserService implements UserServiceI {
         userRepository.save(user);
         return true;
     }
-
-
 }
