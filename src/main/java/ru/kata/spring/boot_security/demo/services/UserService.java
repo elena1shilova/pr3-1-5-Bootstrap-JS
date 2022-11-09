@@ -1,4 +1,6 @@
 package ru.kata.spring.boot_security.demo.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,22 +10,19 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositopies.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositopies.UserRepository;
+
 import javax.transaction.Transactional;
 import java.util.*;
 
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserServiceI {
 
-    final
-    UserRepository userRepository;
-    final
-    RoleRepository roleRepository;
-    final
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
 
-    public UserService(RoleRepository roleRepository, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.roleRepository = roleRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -40,43 +39,42 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    @Override
     public User findUserById(Long userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
         return userFromDb.orElse(new User());
     }
 
+    @Override
     public List<User> allUsers() {
         return userRepository.findAll();
     }
 
-    public boolean saveUser(User user) {
+
+    @Override
+    public User show(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public void saveUser1(User user) {
+        userRepository.save(user);
+    }
+    @Override
+    public boolean newUser(User user) {
         User userFromDB = userRepository.findByUsername(user.getUsername());
 
         if (userFromDB != null) {
             return false;
         }
-
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
-    }
-
-    public User show(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    public void delete(Long id) {
-        userRepository.deleteById(id);
-    }
-
-    public List<Role> allRoles() {
-        return roleRepository.findAll();
-    }
-
-    public void saveUser1(User user, Long id) {
-        user.setRoles(new HashSet<>(Collections.singleton(roleRepository.getById(id))));
-        userRepository.save(user);
     }
 
 

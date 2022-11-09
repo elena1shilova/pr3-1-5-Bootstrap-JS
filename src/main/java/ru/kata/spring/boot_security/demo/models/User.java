@@ -1,10 +1,13 @@
 package ru.kata.spring.boot_security.demo.models;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,16 +28,22 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Long age;
 
-    @Size(min=2, message = "Не меньше 5 знаков")
+    @Size(min = 2, message = "Не меньше 5 знаков")
     @Column
     private String email;
 
-    @Size(min=2, message = "Не меньше 5 знаков")
+    @Size(min = 2, message = "Не меньше 5 знаков")
     @Column
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "my_user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
     public User() {
 
     }
@@ -72,10 +81,10 @@ public class User implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities()
-    {
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
+
     @Override
     public String getPassword() {
         return password;

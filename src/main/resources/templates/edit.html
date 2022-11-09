@@ -25,14 +25,18 @@
   <label for="password">Пароль</label>
   <input type="text" th:field="*{password}" id="password" placeholder="Password">
   <br/>
-  <div class="form-group row">
-    <label class="col-4 col-form-label" for="roleId">Роль</label>
-    <select multiple="multiple" th:name="roleId" id="roleId">
-      <option th:each="role : ${allRoles}"
-              th:value="${role.id}"
-              th:text="${role.id} + ' ' + ${role.name}"/>
-    </select>
-  </div>
+
+  <label for="roleId" >Роль</label>
+  <select class="form-control multi-select" th:multiple="multiple" th:name="roles" id="roleId"
+          >
+    <option th:each="role : ${roles}"
+            th:value="${role.id}"
+            th:text="${role.id} + ' ' + ${role.name}"
+            th:selected="${role.id} == ${id}"
+    />
+
+  </select>
+
 
   <br/>
 

@@ -13,9 +13,7 @@
     </form>
     <br>
     <br>
-    <form  th:action="@{/registration}" method="post">
-        <input type="submit" value="Зарегистрироваться">
-    </form>
+
 </div>
 <div class="float" sec:authorize="isAuthenticated()" >
     <div th:text="${#authentication.name}"></div>

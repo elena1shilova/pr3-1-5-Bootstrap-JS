@@ -40,7 +40,7 @@
       </tbody>
     </table>
   </div>
-  <a href="/">Главная</a>
+
 <br>
 <div class="float" sec:authorize="isAuthenticated()">
   <form  th:action="@{/logout}" method="post">
@@ -56,5 +56,9 @@
   </form>
 </div>
 </div>
+<br>
+<br>
+<br>
+<a href="/new">Создать нового пользователя</a>
 </body>
 </html>
