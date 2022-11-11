@@ -1,51 +1,131 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Создание нового пользователя</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <title>Admin panel</title>
 </head>
 <body>
-<h1>Добро пожаловать на страницу создания пользователя!</h1>
-<div>
-    <form th:method="POST" th:action="@{/admin/new}" th:object="${userForm}">
-        <label for="username">Введите имя: </label>
-        <input type="text" th:field="*{username}" id="username"/>
-        <div style="color: red" th:if="${#fields.hasErrors('username')}"
-             th:errors="*{username}">text error</div>
-        </br>
-        <label for="surname">Введите фамилию: </label>
-        <input type="text" th:field="*{surname}" id="surname"/>
-        <div style="color: red" th:if="${#fields.hasErrors('surname')}"
-             th:errors="*{surname}">text error</div>
-        </br>
-        <label for="age">Введите возраст: </label>
-        <input type="text" th:field="*{age}" id="age"/>
-        <div style="color: red" th:if="${#fields.hasErrors('age')}"
-             th:errors="*{age}">text error</div>
-        </br>
-        <label for="email">Введите email: </label>
-        <input type="text" th:field="*{email}" id="email"/>
-        <div style="color: red" th:if="${#fields.hasErrors('email')}"
-             th:errors="*{email}">text error</div>
-        </br>
-        <label for="password">Введите пароль: </label>
-        <input type="text" th:field="*{password}" id="password"/>
-        <div style="color: red" th:if="${#fields.hasErrors('password')}"
-             th:errors="*{password}">text error</div>
-        </br>
-        </br>
-        <label for="roleId" >Роль</label>
-        <select class="form-control multi-select" th:multiple="multiple" th:name="roles" id="roleId">
-            <option th:each="role : ${roles}"
-                    th:value="${role.id}"
-                    th:text="${role.id} + ' ' + ${role.name}"
-                    th:selected="${role.id} == ${id}"/>
-        </select>
-        </br>
-        </br>
-        <input type="submit" value="Создать!"/>
-    </form>
-    </br></br>
-    <a href="/admin">Главная</a>
+<nav class="navbar sticky-top navbar-dark bg-dark " style="height: 40px;">
+    <p class="text-left text-white">
+        <a class="font-weight-bold" th:text="${#authentication.name}"></a>
+        <a class="font-weight-normal">with roles: </a>
+        <a th:each="user : ${users}">
+            <td><a th:each="role : ${user.roles}" th:text="${role.name + ' '}"></a>
+            </td>
+        </a>
+    </p>
+    <p class="text-right text-white">
+        <a class="text-secondary" href="/login">Logout</a>
+    </p>
+</nav>
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <button type="button" class="btn btn-primary text-left" style="width: 100%;">
+                Admin
+            </button>
+            <button type="button" class="btn btn-white text-left text-primary" style="width: 100%;">
+                <a href="/user">User</a>
+            </button>
+        </div>
+        <div class="col-md-10">
+            <h3>Admin panel</h3>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Users Table</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/new">New User</a>
+                </li>
+                <div class="card" style="width: 100%;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item font-weight-bold" style="background-color: #eeeeee">Add new user</li>
+                        <li class="list-group-item">
+                            <form th:method="POST" th:action="@{/admin/new}" th:object="${userForm}">
+                                <div class="form-group text-center">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label class="font-weight-bold" for="username">First name</label>
+                                        <input type="text" class="form-control" th:field="*{username}" id="username"/>
+                                        <div style="color: red" th:if="${#fields.hasErrors('username')}"
+                                             th:errors="*{username}">text error
+                                        </div>
+                                    </div>
+                                </div>
+                                </br>
+                                <div class="form-group text-center">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label class="font-weight-bold" for="surname">Last name</label>
+                                        <input type="text" class="form-control" th:field="*{surname}" id="surname"/>
+                                        <div style="color: red" th:if="${#fields.hasErrors('surname')}"
+                                             th:errors="*{surname}">text error
+                                        </div>
+                                    </div>
+                                </div>
+                                </br>
+                                <div class="form-group text-center">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label class="font-weight-bold" for="age">Age</label>
+                                        <input type="number" class="form-control" th:field="*{age}" id="age"/>
+                                        <div style="color: red" th:if="${#fields.hasErrors('age')}"
+                                             th:errors="*{age}">text error
+                                        </div>
+                                    </div>
+                                </div>
+                                </br>
+                                <div class="form-group text-center">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label class="font-weight-bold" for="email">Email</label>
+                                        <input type="email" class="form-control" th:field="*{email}" id="email"/>
+                                        <div style="color: red" th:if="${#fields.hasErrors('email')}"
+                                             th:errors="*{email}">text error
+                                        </div>
+                                    </div>
+                                </div>
+                                </br>
+                                <div class="form-group text-center">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label class="font-weight-bold" for="password">Password</label>
+                                        <input type="password" class="form-control" th:field="*{password}" id="password"/>
+                                        <div style="color: red" th:if="${#fields.hasErrors('password')}"
+                                             th:errors="*{password}">text error
+                                        </div>
+                                    </div>
+                                </div>
+                                </br>
+                                <div class="form-group text-center">
+                                    <div class="col-md-4 offset-md-4">
+                                <label class="font-weight-bold" for="roleId">Role</label>
+                                <select class="form-control multi-select" th:multiple="multiple" th:name="roles"
+                                        id="roleId" size="2">
+                                    <option th:each="role : ${roles}"
+                                            th:value="${role.id}"
+                                            th:text="${role.id} + ' ' + ${role.name}"
+                                            th:selected="${role.id} == ${id}"/>
+                                </select>
+                                    </div>
+                                </div>
+                                </br>
+                                <div class="col-md-5 offset-md-5">
+                                <button type="submit" class="btn btn-success" style="width: 35%;">Add new user</button>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+    </div>
 </div>
+
+
 </body>
 </html>

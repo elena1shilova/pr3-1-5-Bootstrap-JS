@@ -1,48 +1,89 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-  <title>Личная страница</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <title>User page</title>
 </head>
 <body>
-<h1>Добро пожаловать на вашу страницу: <a th:text="${#authentication.name}"></a></h1>
-<div th:switch="${users}">
-  <h2 th:case="null">Не найдено лиц!</h2>
-  <div th:case="*" >
-    <table border="1" width="100%">
-      <thead>
-      <tr>
-        <th>Id</th>
-        <th>Имя</th>
-        <th>Фамилия</th>
-        <th>Возраст</th>
-        <th>Email</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="user : ${users}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.username}"></td>
-        <td th:text="${user.surname}"></td>
-        <td th:text="${user.age}"></td>
-        <td th:text="${user.email}"></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <br>
-  <div class="float" sec:authorize="isAuthenticated()">
-    <form  th:action="@{/logout}" method="post">
-      <input type="submit" value="Выйти">
-    </form>
-  </div>
-  <div class="float" sec:authorize ="!isAuthenticated()">
-    <form  th:action="@{/login}" method="post">
-      <input type="submit" value="Авторизоваться">
-    </form>
-    <form  th:action="@{/registration}" method="post">
-      <input type="submit" value="Зарегистрироваться">
-    </form>
-  </div>
+<nav class="navbar sticky-top navbar-dark bg-dark " style="height: 40px;">
+    <p class="text-left text-white">
+        <a class="font-weight-bold" th:text="${#authentication.name}"></a>
+        <a class="font-weight-normal">with roles: </a>
+        <a th:each="user : ${users}">
+            <td th:each="role : ${user.roles}" th:text="${role.name}">
+            </td>
+        </a>
+    </p>
+    <p class="text-right text-white">
+        <a class="text-secondary" href="/login">Logout</a>
+    </p>
+</nav>
+<br>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-2">
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                <button type="button" class="btn btn-white text-left text-primary" style="width: 100%;">
+                    <a href="/admin">Admin</a> </span>
+                </button>
+            </div>
+            <button type="button" class="btn btn-primary text-left" style="width: 100%;">
+                User </span>
+            </button>
+
+        </div>
+        <div class="col-md-10">
+            <h3>User information-page</h3>
+            <div class="card" style="width: 100%;">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item font-weight-bold" style="background-color: #eeeeee">About user</li>
+                    <li class="list-group-item">
+                        <div th:switch="${users}">
+                            <h2 th:case="null">Не найдено лиц!</h2>
+                            <div th:case="*">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="user : ${users}">
+                                        <td th:text="${user.id}"></td>
+                                        <td th:text="${user.username}"></td>
+                                        <td th:text="${user.surname}"></td>
+                                        <td th:text="${user.age}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        <td>
+
+                                            <a th:each="role : ${user.roles}" th:text="${role.name} + ' '"></a>
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

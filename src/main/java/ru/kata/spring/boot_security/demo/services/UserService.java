@@ -54,10 +54,14 @@ public class UserService implements UserServiceI {
         userRepository.deleteById(id);
     }
 
-    @Override
-    public void saveUser1(User user) {
-        userRepository.save(user);
-    }
+//    @Override
+//    public void saveUser1(User user) {
+//        userRepository.save(user);
+//    }
+@Override
+public void saveUser1(User user) {
+    userRepository.save(user);
+}
 
     @Override
     public boolean newUser(User user) {
