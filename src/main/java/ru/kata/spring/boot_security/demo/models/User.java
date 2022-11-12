@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "my_user")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

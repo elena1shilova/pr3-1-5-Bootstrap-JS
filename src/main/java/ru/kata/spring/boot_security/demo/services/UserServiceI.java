@@ -20,5 +20,7 @@ public interface UserServiceI extends UserDetailsService {
 
     void saveUser1(User user);
 
+
+
     boolean newUser(User user);
 }

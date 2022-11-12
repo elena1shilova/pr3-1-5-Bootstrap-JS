@@ -27,14 +27,6 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-//    @GetMapping("")
-//    public String userList(Model model) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User user = (User) authentication.getPrincipal();
-//        model.addAttribute("users", user);
-//        model.addAttribute("allUsers", userService.allUsers());
-//        return "admin";
-//    }
 @GetMapping()
 public String userList(Model model) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,23 +37,6 @@ public String userList(Model model) {
     return "admin";
 
 }
-    @PostMapping("/deleteUser")
-    public String deleteUser(@RequestParam("id") Long id) {
-//        model.addAttribute("ID", userService.show(id).getId());
-//        model.addAttribute("username", userService.show(id).getUsername());
-//        model.addAttribute("surname", userService.show(id).getSurname());
-//        model.addAttribute("age", userService.show(id).getAge());
-//        model.addAttribute("email", userService.show(id).getEmail());
-//        model.addAttribute("roles", userService.show(id).getAuthorities());
-        userService.delete(id);
-        return "redirect:/admin";
-    }
-
-//    @GetMapping("{id}")
-//    public String delete(@PathVariable("id") Long id) {
-//        userService.delete(id);
-//        return "redirect:/admin";
-//    }
 
     @GetMapping("/edit/{id}")
     public String update(@PathVariable("id") Long id, Model model) {
@@ -80,25 +55,22 @@ public String userList(Model model) {
         model.addAttribute("roles", roleService.allRoles());
         return "/new";
     }
-//    @PostMapping("/edit/{id}")
-//    public String update(@RequestParam(value = "roles") Long[] roles, User user) {
-//        List<Role> rolesString = roleService.allRoles();
-//        List<Role> roles1 = new ArrayList<>(roles.length);
-//        for (Long role : roles) {
-//            roles1.add(rolesString.get((role.intValue() - 1)));
-//        }
-//        user.setRoles(new HashSet<>(roleService.saveAll(roles1)));
-//        userService.saveUser1(user);
-//        return "redirect:/admin";
-//    }
+
 @PostMapping("/edit/{id}")
 public String update(@RequestParam(value = "roles") List<Role> roles, User user) {
     user.setRoles(new HashSet<>(roleService.saveAll(roles)));
     userService.saveUser1(user);
     return "redirect:/admin";
 }
-
-
+    @PostMapping("/deleteUser/")
+    public String deleteUser(@RequestParam(value = "id", required = false) Long id) {
+        userService.delete(id);
+        return "redirect:/admin";
+    }
+//    @PostMapping("/login")
+//    public String loginPage(){
+//        return "login";
+//    }
     @PostMapping("/new")
     public String addUser(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {

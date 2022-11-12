@@ -150,13 +150,14 @@
                                             </div>
                                             </form>
 
-                                            <form action="/admin/deleteUser" method="post" th:value="${user.id}"
+                                            <form action="/admin/deleteUser/" method="post" th:value="${user.id}"
                                                   name="id">
                                                 <td>
                                                     <button type="button" class="btn btn-danger" data-toggle="modal"
                                                             th:data-target="${'#deleter'+user.id}">Delete
                                                     </button>
                                                 </td>
+
                                                 <div class="modal fade" th:id="${'deleter'+user.id}" tabindex="-1"
                                                      role="dialog"
                                                      aria-labelledby="deleterTitle" aria-hidden="true">
@@ -187,14 +188,15 @@
                                                                 <input class="form-control" type="text"
                                                                        th:placeholder="${user.email}" readonly>
                                                                 <strong>Roles</strong>
-                                                                <input class="form-control" type="text"
-                                                                       th:placeholder="${user.roles}" readonly>
+                                                                <input class="form-control" type="text" th:each="role : ${user.roles}"
+                                                                       th:placeholder="${role.name} + ' '" readonly>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Close
                                                                 </button>
-                                                                <button type="submit" class="btn btn-danger">Delete
+                                                                <button type="submit" class="btn btn-danger" name="id"
+                                                                        th:value="${user.id}">Delete
                                                                 </button>
                                                             </div>
                                                         </div>
