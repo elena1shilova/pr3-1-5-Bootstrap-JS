@@ -92,8 +92,8 @@ public String userList(Model model) {
 //        return "redirect:/admin";
 //    }
 @PostMapping("/edit/{id}")
-public String update(User user) {
-
+public String update(@RequestParam(value = "roles") List<Role> roles, User user) {
+    user.setRoles(new HashSet<>(roleService.saveAll(roles)));
     userService.saveUser1(user);
     return "redirect:/admin";
 }
