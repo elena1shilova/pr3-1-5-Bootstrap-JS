@@ -53,10 +53,20 @@
                             <form th:method="POST" th:action="@{/admin/new}" th:object="${userForm}">
                                 <div class="form-group text-center">
                                     <div class="col-md-4 offset-md-4">
-                                        <label class="font-weight-bold" for="username">First name</label>
-                                        <input type="text" class="form-control" th:field="*{username}" id="username"/>
+                                        <label class="font-weight-bold" for="username">Email</label>
+                                        <input type="email" class="form-control" th:field="*{username}" id="username"/>
                                         <div style="color: red" th:if="${#fields.hasErrors('username')}"
                                              th:errors="*{username}">text error
+                                        </div>
+                                    </div>
+                                </div>
+                                </br>
+                                <div class="form-group text-center">
+                                    <div class="col-md-4 offset-md-4">
+                                        <label class="font-weight-bold" for="name">First name</label>
+                                        <input type="text" class="form-control" th:field="*{name}" id="name"/>
+                                        <div style="color: red" th:if="${#fields.hasErrors('name')}"
+                                             th:errors="*{name}">text error
                                         </div>
                                     </div>
                                 </div>
@@ -81,20 +91,12 @@
                                     </div>
                                 </div>
                                 </br>
-                                <div class="form-group text-center">
-                                    <div class="col-md-4 offset-md-4">
-                                        <label class="font-weight-bold" for="email">Email</label>
-                                        <input type="email" class="form-control" th:field="*{email}" id="email"/>
-                                        <div style="color: red" th:if="${#fields.hasErrors('email')}"
-                                             th:errors="*{email}">text error
-                                        </div>
-                                    </div>
-                                </div>
-                                </br>
+
                                 <div class="form-group text-center">
                                     <div class="col-md-4 offset-md-4">
                                         <label class="font-weight-bold" for="password">Password</label>
-                                        <input type="password" class="form-control" th:field="*{password}" id="password"/>
+                                        <input type="password" class="form-control" th:field="*{password}"
+                                               id="password"/>
                                         <div style="color: red" th:if="${#fields.hasErrors('password')}"
                                              th:errors="*{password}">text error
                                         </div>
@@ -103,19 +105,20 @@
                                 </br>
                                 <div class="form-group text-center">
                                     <div class="col-md-4 offset-md-4">
-                                <label class="font-weight-bold" for="roleId">Role</label>
-                                <select class="form-control multi-select" th:multiple="multiple" th:name="roles"
-                                        id="roleId" size="2">
-                                    <option th:each="role : ${roles}"
-                                            th:value="${role.id}"
-                                            th:text="${role.id} + ' ' + ${role.name}"
-                                            th:selected="${role.id} == ${id}"/>
-                                </select>
+                                        <label class="font-weight-bold" for="roleId">Role</label>
+                                        <select class="form-control multi-select" th:multiple="multiple" th:name="roles"
+                                                id="roleId" size="2">
+                                            <option th:each="role : ${roles}"
+                                                    th:value="${role.id}"
+                                                    th:text="${role.id} + ' ' + ${role.name}"
+                                                    th:selected="${role.id} == ${id}"/>
+                                        </select>
                                     </div>
                                 </div>
                                 </br>
                                 <div class="col-md-5 offset-md-5">
-                                <button type="submit" class="btn btn-success" style="width: 35%;">Add new user</button>
+                                    <button type="submit" class="btn btn-success" style="width: 35%;">Add new user
+                                    </button>
                                 </div>
                             </form>
                         </li>
@@ -125,7 +128,5 @@
         </div>
     </div>
 </div>
-
-
 </body>
 </html>

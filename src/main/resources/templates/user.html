@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -29,7 +28,6 @@
 <br>
 <div class="container-fluid">
     <div class="row">
-
         <div class="col-md-2">
             <div sec:authorize="hasRole('ROLE_ADMIN')">
                 <button type="button" class="btn btn-white text-left text-primary" style="width: 100%;">
@@ -39,7 +37,6 @@
             <button type="button" class="btn btn-primary text-left" style="width: 100%;">
                 User </span>
             </button>
-
         </div>
         <div class="col-md-10">
             <h3>User information-page</h3>
@@ -54,10 +51,10 @@
                                     <thead>
                                     <tr>
                                         <th scope="col">ID</th>
+                                        <th scope="col">Email</th>
                                         <th scope="col">First Name</th>
                                         <th scope="col">Last Name</th>
                                         <th scope="col">Age</th>
-                                        <th scope="col">Email</th>
                                         <th scope="col">Role</th>
                                     </tr>
                                     </thead>
@@ -65,13 +62,11 @@
                                     <tr th:each="user : ${users}">
                                         <td th:text="${user.id}"></td>
                                         <td th:text="${user.username}"></td>
+                                        <td th:text="${user.name}"></td>
                                         <td th:text="${user.surname}"></td>
                                         <td th:text="${user.age}"></td>
-                                        <td th:text="${user.email}"></td>
                                         <td>
-
                                             <a th:each="role : ${user.roles}" th:text="${role.name} + ' '"></a>
-
                                         </td>
                                     </tr>
                                     </tbody>

@@ -18,8 +18,8 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Поле не должно быть пустым")
-    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
+
+    @Size(min = 2, message = "Не меньше 5 знаков")
     @Column(name = "email")
     private String username;
 
@@ -30,9 +30,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Long age;
 
-    @Size(min = 2, message = "Не меньше 5 знаков")
+    @NotEmpty(message = "Поле не должно быть пустым")
+    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
     @Column(name = "username")
-    private String email;
+    private String name;
 
     @Size(min = 2, message = "Не меньше 5 знаков")
     @Column
@@ -74,12 +75,12 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public String getEmail() {
-        return email;
+    public String getName() {
+        return name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

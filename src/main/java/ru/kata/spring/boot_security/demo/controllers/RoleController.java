@@ -12,7 +12,6 @@ import ru.kata.spring.boot_security.demo.services.RoleServiceI;
 import ru.kata.spring.boot_security.demo.services.UserServiceI;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -27,16 +26,16 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-@GetMapping()
-public String userList(Model model) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    User user = (User) authentication.getPrincipal();
-    model.addAttribute("users", user);
-    model.addAttribute("allUsers", userService.allUsers());
-    model.addAttribute("roles", roleService.allRoles());
-    return "admin";
+    @GetMapping()
+    public String userList(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("users", user);
+        model.addAttribute("allUsers", userService.allUsers());
+        model.addAttribute("roles", roleService.allRoles());
+        return "admin";
 
-}
+    }
 
     @GetMapping("/edit/{id}")
     public String update(@PathVariable("id") Long id, Model model) {
@@ -56,21 +55,19 @@ public String userList(Model model) {
         return "/new";
     }
 
-@PostMapping("/edit/{id}")
-public String update(@RequestParam(value = "roles") List<Role> roles, User user) {
-    user.setRoles(new HashSet<>(roleService.saveAll(roles)));
-    userService.saveUser1(user);
-    return "redirect:/admin";
-}
+    @PostMapping("/edit/{id}")
+    public String update(@RequestParam(value = "roles") List<Role> roles, User user) {
+        user.setRoles(new HashSet<>(roleService.saveAll(roles)));
+        userService.saveUser1(user);
+        return "redirect:/admin";
+    }
+
     @PostMapping("/deleteUser/")
     public String deleteUser(@RequestParam(value = "id", required = false) Long id) {
         userService.delete(id);
         return "redirect:/admin";
     }
-//    @PostMapping("/login")
-//    public String loginPage(){
-//        return "login";
-//    }
+
     @PostMapping("/new")
     public String addUser(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {

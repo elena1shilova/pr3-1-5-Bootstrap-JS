@@ -32,15 +32,7 @@ public class UserService implements UserServiceI {
         }
         return user;
     }
-//@Override
-//@Transactional
-//public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//    User user = userRepository.findByEmail(email);
-//    if (user == null) {
-//        throw new UsernameNotFoundException("User not found");
-//    }
-//    return user;
-//}
+
     @Override
     public User findUserById(Long userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
@@ -62,15 +54,10 @@ public class UserService implements UserServiceI {
         userRepository.deleteById(id);
     }
 
-
-//    @Override
-//    public void saveUser1(User user) {
-//        userRepository.save(user);
-//    }
-@Override
-public void saveUser1(User user) {
-    userRepository.save(user);
-}
+    @Override
+    public void saveUser1(User user) {
+        userRepository.save(user);
+    }
 
     @Override
     public boolean newUser(User user) {
