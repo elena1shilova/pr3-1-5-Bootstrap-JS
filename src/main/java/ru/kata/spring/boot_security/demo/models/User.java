@@ -20,7 +20,7 @@ public class User implements UserDetails {
     private Long id;
     @NotEmpty(message = "Поле не должно быть пустым")
     @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
-    @Column
+    @Column(name = "email")
     private String username;
 
     @Size(min = 2, max = 100, message = "Фамилия должна быть от 2 до 100 символов длиной")
@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private Long age;
 
     @Size(min = 2, message = "Не меньше 5 знаков")
-    @Column
+    @Column(name = "username")
     private String email;
 
     @Size(min = 2, message = "Не меньше 5 знаков")
