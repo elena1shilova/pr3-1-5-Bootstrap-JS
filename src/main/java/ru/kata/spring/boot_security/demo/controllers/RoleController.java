@@ -2,26 +2,25 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.services.RoleServiceI;
-import ru.kata.spring.boot_security.demo.services.UserServiceI;
+import ru.kata.spring.boot_security.demo.services.RoleService;
+import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 
-@Controller
-@RequestMapping("/admin")
+//@Controller
+//@RequestMapping("/admin")
 public class RoleController {
-    private final UserServiceI userService;
-    private final RoleServiceI roleService;
+    private final UserService userService;
+    private final RoleService roleService;
 
-    public RoleController(UserServiceI userService, RoleServiceI roleService) {
+    public RoleController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }

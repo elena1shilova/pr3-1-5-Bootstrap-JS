@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 
-@Controller
-@RequestMapping("/user")
+//@Controller
+//@RequestMapping("/user")
 public class UserController {
     @GetMapping()
     public String userList1(Model model) {
