@@ -40,15 +40,32 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "my_user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id")
-    )
+//    @JoinTable(
+//            name = "my_user_roles",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "roles_id")
+//    )
     private Set<Role> roles = new HashSet<>();
 
     public User() {
 
+    }
+
+    public User(String username, String surname, Long age, String name, String password, Set<Role> roles) {
+
+        this.username = username;
+        this.surname = surname;
+        this.age = age;
+        this.name = name;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String username, String surname, Long age, String name) {
+        this.username = username;
+        this.surname = surname;
+        this.age = age;
+        this.name = name;
     }
 
     public Long getId() {

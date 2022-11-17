@@ -12,7 +12,7 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 import java.security.Principal;
 import java.util.List;
 
-//@CrossOrigin
+@CrossOrigin
 @RestController
 //@RequestMapping("/api")
 public class AdminRESTController {
@@ -54,16 +54,22 @@ public class AdminRESTController {
         return userService.show(id);
     }
 
-   /*@PostMapping(value = "/api/admin")
+   @PostMapping("/api/admin")
     public ResponseEntity<User> addUserAction(@RequestBody User user) {
         userService.newUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }*/
-       @PostMapping("api/admin")
-   public User addUser(@RequestBody User user) {
-        userService.saveUser1(user);
-        return user;
     }
+//    @PostMapping("/edit/{id}")
+//    public String update(@RequestParam(value = "roles") List<Role> roles, User user) {
+//        user.setRoles(new HashSet<>(roleService.saveAll(roles)));
+//        userService.saveUser1(user);
+//        return "redirect:/admin";
+//    }
+//       @PostMapping("api/admin")
+//   public User addUser(@RequestBody User user) {
+//        userService.saveUser1(user);
+//        return user;
+//    }
     @PutMapping("/api/admin")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.saveUser1(user);

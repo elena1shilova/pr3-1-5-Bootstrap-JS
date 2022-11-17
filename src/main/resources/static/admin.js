@@ -1,6 +1,7 @@
 $(async function () {
     await allUsers();
     await newUser();
+    deleteUser();
 });
 async function allUsers() {
     const table = $('#data1');
@@ -48,9 +49,9 @@ async function newUser() {
 
     formAddNewUser.addEventListener('submit', function (event) {
         event.preventDefault();
-        let rolesNewUser = [];
+        let roles = [];
         for (let i = 0; i < formAddNewUser.roles.options.length; i++) {
-            if (formAddNewUser.roles.options[i].selected) rolesNewUser.push({
+            if (formAddNewUser.roles.options[i].selected) roles.push({
                 id: formAddNewUser.roles.options[i].value,
                 name: formAddNewUser.roles.options[i].name
             })
@@ -67,7 +68,7 @@ async function newUser() {
                 surname: formAddNewUser.surname.value,
                 age: formAddNewUser.age.value,
                 password: formAddNewUser.password.value,
-                roles: rolesNewUser
+                roles: roles
             })
         }).then(() => {
             formAddNewUser.reset();
@@ -79,4 +80,80 @@ async function newUser() {
             })
     })
 
+}
+
+/*
+Скрипт заполняет модальное окно
+ */
+
+$(document).ready(function () {
+    $('#delete').on("show.bs.modal", function (event) {  //#delete - id модального окна
+        const button = $(event.relatedTarget);  //кнопка, которая вызывает модальное окно
+        const id = button.data("id"); // Извлечение информации из аттрибута data-id="${user.id}" кнопки, это будет id удаляемого пользователя
+        viewDeleteModal(id); //запускаем функцию для заполнения модального окна данными по id пользователя
+    })
+})
+
+async function viewDeleteModal(id) {
+    //Получаем пользователя по id
+    let userDelete = await getUser(id);
+    let formDelete = document.forms["formDeleteUser"];
+    //Заполняем форму полученными данными
+    formDelete.id.value = userDelete.id;
+    formDelete.username.value = userDelete.username;
+    formDelete.name.value = userDelete.name;
+    formDelete.surname.value = userDelete.surname;
+    formDelete.age.value = userDelete.age;
+
+
+    $('#deleteRolesUser').empty();
+
+    await fetch("http://localhost:8088/api/roles")
+        .then(r => r.json())
+        .then(roles => {
+            roles.forEach(role => {
+                let selectedRole = false;
+                for (let i = 0; i < userDelete.roles.length; i++) {
+                    if (userDelete.roles[i].name === role.name) {
+                        selectedRole = true;
+                        break;
+                    }
+                }
+                let element = document.createElement("option");
+                element.text = role.name;
+                element.value = role.id;
+                if (selectedRole) element.selected = true;
+                $('#deleteRolesUser')[0].appendChild(element);
+            })
+        })
+        .catch((error) => {
+            alert(error);
+        })
+}
+
+async function getUser(id) {
+
+    let url = "http://localhost:8088/api/admin/" + id;
+    let response = await fetch(url);
+    return await response.json();
+}
+
+function deleteUser() {
+    const deleteForm = document.forms["formDeleteUser"];
+    deleteForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        fetch("http://localhost:8088/api/admin/" + deleteForm.id.value, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(() => {
+                $('#deleteFormCloseButton').click();
+                allUsers();
+            })
+            .catch((error) => {
+                alert(error);
+            });
+    })
 }
