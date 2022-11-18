@@ -2,9 +2,11 @@ $(async function () {
     await allUsers();
     await newUser();
     deleteUser();
+    editCurrentUser();
 });
+
 async function allUsers() {
-    const table = $('#data1');
+    const table = $('#bodyAllUserTable');
     table.empty()
     fetch("http://localhost:8088/api/admin")
         .then(r => r.json())
@@ -13,11 +15,11 @@ async function allUsers() {
                 let users = `$(
                         <tr>
                             <td>${user.id}</td>
-                            <td>${user.username}</td>
-                            <td>${user.name}</td>
-                            <td>${user.surname}</td>                            
+                            <td>${user.firstName}</td>
+                            <td>${user.lastName}</td>                         
                             <td>${user.age}</td>
-                            <td>${user.roles.map(role => " " + role.name)}</td>
+                            <td>${user.username}</td>
+                            <td>${user.roles.map(role => " " + role.name.substring(5))}</td>
                             <td>
                                 <button type="button" class="btn btn-info" data-toggle="modal" id="buttonEdit" data-action="edit" data-id="${user.id}" data-target="#edit">Edit</button>
                             </td>
@@ -39,9 +41,9 @@ async function newUser() {
         .then(roles => {
             roles.forEach(role => {
                 let element = document.createElement("option");
-                element.text = role.name;
+                element.text = role.name.substring(5);
                 element.value = role.id;
-                $('#roles')[0].appendChild(element);
+                $('#rolesNewUser')[0].appendChild(element);
             })
         })
 
@@ -49,9 +51,9 @@ async function newUser() {
 
     formAddNewUser.addEventListener('submit', function (event) {
         event.preventDefault();
-        let roles = [];
+        let rolesNewUser = [];
         for (let i = 0; i < formAddNewUser.roles.options.length; i++) {
-            if (formAddNewUser.roles.options[i].selected) roles.push({
+            if (formAddNewUser.roles.options[i].selected) rolesNewUser.push({
                 id: formAddNewUser.roles.options[i].value,
                 name: formAddNewUser.roles.options[i].name
             })
@@ -63,12 +65,12 @@ async function newUser() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: formAddNewUser.username.value,
-                name: formAddNewUser.name.value,
-                surname: formAddNewUser.surname.value,
+                firstName: formAddNewUser.firstName.value,
+                lastName: formAddNewUser.lastName.value,
                 age: formAddNewUser.age.value,
+                username: formAddNewUser.username.value,
                 password: formAddNewUser.password.value,
-                roles: roles
+                roles: rolesNewUser
             })
         }).then(() => {
             formAddNewUser.reset();
@@ -80,62 +82,6 @@ async function newUser() {
             })
     })
 
-}
-
-/*
-Скрипт заполняет модальное окно
- */
-
-$(document).ready(function () {
-    $('#delete').on("show.bs.modal", function (event) {  //#delete - id модального окна
-        const button = $(event.relatedTarget);  //кнопка, которая вызывает модальное окно
-        const id = button.data("id"); // Извлечение информации из аттрибута data-id="${user.id}" кнопки, это будет id удаляемого пользователя
-        viewDeleteModal(id); //запускаем функцию для заполнения модального окна данными по id пользователя
-    })
-})
-
-async function viewDeleteModal(id) {
-    //Получаем пользователя по id
-    let userDelete = await getUser(id);
-    let formDelete = document.forms["formDeleteUser"];
-    //Заполняем форму полученными данными
-    formDelete.id.value = userDelete.id;
-    formDelete.username.value = userDelete.username;
-    formDelete.name.value = userDelete.name;
-    formDelete.surname.value = userDelete.surname;
-    formDelete.age.value = userDelete.age;
-
-
-    $('#deleteRolesUser').empty();
-
-    await fetch("http://localhost:8088/api/roles")
-        .then(r => r.json())
-        .then(roles => {
-            roles.forEach(role => {
-                let selectedRole = false;
-                for (let i = 0; i < userDelete.roles.length; i++) {
-                    if (userDelete.roles[i].name === role.name) {
-                        selectedRole = true;
-                        break;
-                    }
-                }
-                let element = document.createElement("option");
-                element.text = role.name;
-                element.value = role.id;
-                if (selectedRole) element.selected = true;
-                $('#deleteRolesUser')[0].appendChild(element);
-            })
-        })
-        .catch((error) => {
-            alert(error);
-        })
-}
-
-async function getUser(id) {
-
-    let url = "http://localhost:8088/api/admin/" + id;
-    let response = await fetch(url);
-    return await response.json();
 }
 
 function deleteUser() {
@@ -156,4 +102,133 @@ function deleteUser() {
                 alert(error);
             });
     })
+}
+
+
+$(document).ready(function () {
+    $('#delete').on("show.bs.modal", function (event) {
+        const button = $(event.relatedTarget);
+        const id = button.data("id");
+        viewDeleteModal(id);
+    })
+})
+
+async function viewDeleteModal(id) {
+    let userDelete = await getUser(id);
+    let formDelete = document.forms["formDeleteUser"];
+    formDelete.id.value = userDelete.id;
+    formDelete.firstName.value = userDelete.firstName;
+    formDelete.lastName.value = userDelete.lastName;
+    formDelete.age.value = userDelete.age;
+    formDelete.username.value = userDelete.username;
+
+    $('#deleteRolesUser').empty();
+
+    await fetch("http://localhost:8088/api/roles")
+        .then(r => r.json())
+        .then(roles => {
+            roles.forEach(role => {
+                let selectedRole = false;
+                for (let i = 0; i < userDelete.roles.length; i++) {
+                    if (userDelete.roles[i].name === role.name) {
+                        selectedRole = true;
+                        break;
+                    }
+                }
+                let element = document.createElement("option");
+                element.text = role.name.substring(5);
+                element.value = role.id;
+                if (selectedRole) element.selected = true;
+                $('#deleteRolesUser')[0].appendChild(element);
+            })
+        })
+        .catch((error) => {
+            alert(error);
+        })
+}
+
+async function getUser(id) {
+
+    let url = "http://localhost:8088/api/admin/" + id;
+    let response = await fetch(url);
+    return await response.json();
+}
+
+function editCurrentUser() {
+    const editForm = document.forms["formEditUser"];
+    editForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        let editUserRoles = [];
+        for (let i = 0; i < editForm.roles.options.length; i++) {
+            if (editForm.roles.options[i].selected) editUserRoles.push({
+                id: editForm.roles.options[i].value,
+                name: editForm.roles.options[i].name
+            })
+        }
+
+        fetch("http://localhost:8088/api/admin", {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: editForm.id.value,
+                firstName: editForm.firstName.value,
+                lastName: editForm.lastName.value,
+                age: editForm.age.value,
+                username: editForm.username.value,
+                password: editForm.password.value,
+                roles: editUserRoles
+            })
+        }).then(() => {
+            $('#editFormCloseButton').click();
+            allUsers();
+        })
+            .catch((error) => {
+                alert(error);
+            })
+    })
+}
+
+$(document).ready(function () {
+    $('#edit').on("show.bs.modal", function (event) {
+        const button = $(event.relatedTarget);
+        const id = button.data("id");
+        viewEditModal(id);
+    })
+})
+
+async function viewEditModal(id) {
+    let userEdit = await getUser(id);
+    let form = document.forms["formEditUser"];
+    form.id.value = userEdit.id;
+    form.firstName.value = userEdit.firstName;
+    form.lastName.value = userEdit.lastName;
+    form.age.value = userEdit.age;
+    form.username.value = userEdit.username;
+    form.password.value = userEdit.password;
+
+    $('#editRolesUser').empty();
+
+    await fetch("http://localhost:8088/api/roles")
+        .then(r => r.json())
+        .then(roles => {
+            roles.forEach(role => {
+                let selectedRole = false;
+                for (let i = 0; i < userEdit.roles.length; i++) {
+                    if (userEdit.roles[i].name === role.name) {
+                        selectedRole = true;
+                        break;
+                    }
+                }
+                let element = document.createElement("option");
+                element.text = role.name.substring(5);
+                element.value = role.id;
+                if (selectedRole) element.selected = true;
+                $('#editRolesUser')[0].appendChild(element);
+            })
+        })
+        .catch((error) => {
+            alert(error);
+        })
 }

@@ -1,24 +1,38 @@
+/*
+Скрипт заполняет таблицу все поля в navbar и таблицу About User для /admin и /user
+ */
 $(async function () {
     await loadUser();
 });
+
 async function loadUser() {
     fetch("http://localhost:8088/api/user")
-        .then(r => r.json())
+        .then(r => r.json()) //читаем ответ в JSON
         .then(data => {
-            $('#autUser').append(data.username);
-            let roles = data.roles.map(role => " " + role.name);
-            $('#autRoles').append(roles);
+            // Подставляем полученную информацию в navbar
+            $('#navUsername').append(data.username);
+            //Получаем роли без подстроки ROLE_
+            let roles = data.roles.map(role => " " + role.name.substring(5));
+            $('#navRoles').append(roles);
+
+            //Заполняем таблицу полученными данными
             let user = `$(
             <tr>
                 <td>${data.id}</td>
-                <td>${data.username}</td>
-                <td>${data.surname}</td>
-                <td>${data.name}</td>
+                <td>${data.firstName}</td>
+                <td>${data.lastName}</td>
                 <td>${data.age}</td>
-                <td>${roles}</td>`
-            $('#data').append(user);
+                <td>${data.username}</td>
+                <td>${roles}</td>)`;
+            //Вставляем все в тело таблицы
+            $('#userPanelBody').append(user);
         })
+        //Выводим ошибку если что-то пошло не так
         .catch((error) => {
             alert(error);
         });
 }
+
+
+
+

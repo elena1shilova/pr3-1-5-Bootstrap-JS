@@ -2,25 +2,23 @@ package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.List;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
+    List<User> findAllUsers();
 
-    UserDetails loadUserByUsername(String username);
+    User findById(Long id);
 
-    User findUserById(Long userId);
+    void saveUser(User user);
 
-    List<User> allUsers();
+    void deleteUser(Long id);
 
-    User show(Long id);
+    User findByEmail(String username);
 
-    void delete(Long id);
+    void updateUser(User user);
 
-    void saveUser1(User user);
-
-    public User findByUsername(String username);
-
-    boolean newUser(User user);
+    List<Role> roleList();
 }

@@ -34,8 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                //.antMatchers("/registration").not().fullyAuthenticated()
-        //authorizeRequests().antMatchers("/**").permitAll();
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/news").hasRole("USER")
@@ -59,11 +57,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
     }
 
-    //@Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("http://127.0.0.1:5500")
-//                .allowedMethods("*");
-//    }
 
 }
